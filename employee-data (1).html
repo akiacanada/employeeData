@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<head>
+  <meta property="og:image" content="https://www.raileurope.com/cms-images/871/243/eurail-france-switzerland-overview-3.jpg" charset="UTF-8">
+  <title>Employee Data Management</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <style type="text/css">
+.jumbotron {
+    background: #4d78a0;
+  }
+  
+  #h1 {
+    color: #F2F2F7;
+    font-size: 35pt;
+    font-family: 'Futura';
+  }
+  
+  #h2 {
+    color: #9F9FC9;
+    font-family: 'Futura';
+  }
+  
+  #heading1 {
+    background: #4d78a0;
+    font-family: 'Futura';
+  }
+  
+  #decription {
+    text-align: center;
+    font-size: 18pt;
+    color: #2A719F;
+    font-family: 'Futura';
+    padding: 35px 10px 35px 10px;
+  }
+}
+#panel-color {
+  background: #F2F2F7;
+}
+.panelpanel-default {
+  color: #4d78a0;
+}
+.panel-title {
+  color: white;
+}
+#submit {
+  background: #4d78a0;
+  color: white;
+}
+body {
+  background: #B7B7B7;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <br>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1 id="h1" class="text-center">Employee Data Management</h1>
+      <h2 id="h2" class="text-center">A Comprehensive Directory of Employee Billable Hours</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div id="heading1" class="panel-heading">
+            <h3 class="panel-title">Current Employees</h3>
+          </div>
+          <div class="panel-body" id="recent-member">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Role</th>
+                  <th>Start Date</th>
+                  <th>Months Worked</th>
+                  <th>Monthly Rate ($)</th>
+                  <th>Total Billed ($)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-row">
+                  <td>Rocky</td>
+                  <td>Shield Morgan from the Rain</td>
+                  <td>02/21/16</td>
+                  <td>14</td>
+                  <td>10</td>
+                  <td>140</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="panel-color" class="panel panel-default">
+          <div id="heading1" class="panel-heading">
+            <h3 class="panel-title">Add Employee</h3>
+          </div>
+          <div class="panel-body">
+            <!-- Sign-up Form (note the various input "types")-->
+            <form role="form">
+              <div class="form-group">
+                <label for="employeeName">Employee Name</label>
+                <input type="text" class="form-control" id="employeeName">
+              </div>
+              <div class="form-group">
+                <label for="role">Role</label>
+                <input type="text" class="form-control" id="role">
+              </div>
+              <div class="form-group">
+                <label for="startDate">Start Date (DD/MM/YY - ex: 01/01/89)</label>
+                <input type="text" class="form-control" id="startDate">
+              </div>
+              <div class="form-group">
+                <label for="monthlyRate">Monthly Rate</label>
+                <input type="text" class="form-control" id="monthlyRate">
+              </div>
+              <button class="btn btn-default" id="submit" type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <!-- LINK TO FIREBASE GOES HERE -->
+  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+  <script type="text/javascript"></script>
+  <!-- Script -->
+  <script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAitO2GCnlzR-gMMpiIeRM4PeK-fhap7D0",
+    authDomain: "employee-data-3c24c.firebaseapp.com",
+    databaseURL: "https://employee-data-3c24c.firebaseio.com",
+    projectId: "employee-data-3c24c",
+    storageBucket: "employee-data-3c24c.appspot.com",
+    messagingSenderId: "226903835383"
+  };
+  firebase.initializeApp(config);
+  // Create a variable to reference the database
+  var database = firebase.database();
+
+
+  // Capture submission info
+
+
+
+  $("#submit").on("click", function() {
+    // Don't refresh the page!
+    event.preventDefault();
+
+    var name = $("#employeeName").val().trim();
+    var role = $("#role").val().trim();
+    var date = $("#startDate").val().trim();
+    var rate = $("#monthlyRate").val().trim();
+
+    // Log our inputs to see if the app is working
+
+    console.log(name);
+    console.log(role);
+    console.log(date);
+    console.log(rate);
+
+    //Diplays the input information on Firebase
+
+    database.ref().push({
+
+      rate: rate,
+      date: date,
+      role: role,
+      name: name
+    });
+
+  });
+
+  // Fetch our data from Firebase and display as html on app.
+
+  // database.ref().on('value', function(a) {
+  //   $("#name-display").html("Train Name: " + a.val().name);
+  //   $("#destination-display").html("Destination: " + a.val().destination);
+  //   $("#trainTime-display").html("Train Time: " + a.val().time);
+  //   $("#frequency-display").html("Frequency: " + a.val().frequency);
+
+  // });
+
+  database.ref().on("child_added", function(childSnapshot) {
+
+    // Log everything that's coming out of snapshot
+    console.log(childSnapshot.val().name);
+    console.log(childSnapshot.val().name);
+    console.log(childSnapshot.val().email);
+    console.log(childSnapshot.val().age);
+    console.log(childSnapshot.val().comment);
+    console.log(childSnapshot.val().joinDate);
+
+    // full list of items to the well
+    $(".table").append("<tr class='table-row'><td id='name'> " + childSnapshot.val().name +
+      " </td><td id='email'> " + childSnapshot.val().role +
+      " </td><td id='age'> " + childSnapshot.val().date +
+      " </td><td id='comment'> " + childSnapshot.val().rate + " </td></tr>");
+
+    // Handle the errors
+  }, function(errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+  });
+
+  database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+
+    // Change the HTML to reflect
+    $("#name-display").html(snapshot.val().name);
+    $("#email-display").html(snapshot.val().email);
+    $("#age-display").html(snapshot.val().age);
+    $("#comment-display").html(snapshot.val().comment);
+  });
+  </script>
+</body>
+
+</html>
